@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TokenStatus {
+  dead
+  zombie
+  resurrection
+}
+
+model Token {
+  id        String   @id @default(cuid())
+  chain     String
+  address   String
+  symbol    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  metrics        TokenMetrics?
+  classification TokenClassification?
+
+  @@unique([chain, address])
+}
+
+model TokenMetrics {
+  tokenId           String    @id
+  currentPriceUsd   Decimal?  @db.Decimal(20, 8)
+  currentMarketCap  Decimal?  @db.Decimal(20, 2)
+  athMarketCap      Decimal?  @db.Decimal(20, 2)
+  liquidityUsd      Decimal?  @db.Decimal(20, 2)
+  volume24h         Decimal?  @db.Decimal(20, 2)
+  drawdownPercent   Decimal?  @db.Decimal(5, 2)
+  holders           Int?
+  lastSeenAt        DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  token Token @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+}
+
+model TokenClassification {
+  tokenId           String      @id
+  status            TokenStatus
+  resurrectionScore Int
+  confidenceScore   Int?
+  notes             String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  token Token @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+}
+
+model ScanLog {
+  jobName    String
+  status     String
+  message    String?
+  startedAt  DateTime @default(now())
+  finishedAt DateTime?
+
+  @@id([jobName, startedAt])
+}
