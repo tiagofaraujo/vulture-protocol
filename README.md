@@ -1,25 +1,55 @@
 # Vulture Protocol
 
-Vulture Protocol is a crypto analytics platform focused on discovering
-"resurrection tokens" — tokens that once had significant market cap
-(>10M) and later crashed more than 95%.
+Initial scaffold for a resurrection-token analytics platform.
 
-The goal is to identify potential revival opportunities before the market.
+## Stack
 
-## Core concepts
-
-- Crypto Graveyard Scanner
-- Resurrection Score
-- Dead / Zombie / Resurrection token classification
-
-## Tech Stack (planned)
-
-- Next.js
-- TypeScript
-- Tailwind
-- Prisma
+- Next.js (App Router) + TypeScript
+- Node.js runtime
+- Tailwind CSS
+- Prisma ORM
 - PostgreSQL
 
-## Status
+## Project structure
 
-Project in early development.
+- `app/` - App Router pages (`/` and `/dashboard`)
+- `components/` - reusable UI components (token table)
+- `lib/` - placeholder dataset
+- `types/` - shared TypeScript types
+- `prisma/` - Prisma schema
+
+## Quick start
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Configure environment:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Generate Prisma client:
+
+   ```bash
+   npm run prisma:generate
+   ```
+
+4. Run development server:
+
+   ```bash
+   npm run dev
+   ```
+
+Open `http://localhost:3000`.
+
+
+## Database model
+
+- `Token` + unique `(chain, address)` identity
+- `TokenMetrics` for market/holder/liquidity snapshots
+- `TokenClassification` for status and resurrection scoring
+- `ScanLog` for scan job observability
