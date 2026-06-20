@@ -20,6 +20,23 @@ Initial scaffold for a resurrection-token analytics platform.
 
 ## Quick start
 
+### Prerequisites
+
+Use Node.js 20 or newer. Prisma and Next.js do not support Node.js 16 for this project. If you are using nvm or GitHub Codespaces, run:
+
+```bash
+nvm install
+nvm use
+node -v
+```
+
+If `npm install` previously failed on Node.js 16, remove the partial install before trying again:
+
+```bash
+rm -rf node_modules
+npm install
+```
+
 1. Install dependencies:
 
    ```bash
